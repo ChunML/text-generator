@@ -53,7 +53,7 @@ if args['weights'] == '':
     print('\n\n')
     model.fit(X, y, batch_size=BATCH_SIZE, verbose=1, nb_epoch=1)
     nb_epoch += 1
-    generate_text(model, GENERATE_LENGTH)
+    generate_text(model, GENERATE_LENGTH, VOCAB_SIZE, ix_to_char)
     if nb_epoch % 10 == 0:
       model.save_weights('checkpoint_{}_epoch_{}.hdf5'.format(HIDDEN_DIM, nb_epoch))
 
