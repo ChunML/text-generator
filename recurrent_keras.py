@@ -19,6 +19,7 @@ ap.add_argument('-seq_length', type=int, default=50)
 ap.add_argument('-hidden_dim', type=int, default=500)
 ap.add_argument('-generate_length', type=int, default=500)
 ap.add_argument('-nb_epoch', type=int, default=20)
+ap.add_argument('-mode', default='train')
 ap.add_argument('-weights', default='')
 args = vars(ap.parse_args())
 
@@ -44,11 +45,13 @@ model.compile(loss="categorical_crossentropy", optimizer="rmsprop")
 
 # Generate some sample before training to know how bad it is!
 generate_text(model, args['generate_length'], VOCAB_SIZE, ix_to_char)
+if not args['weights'] == '':
+  model.load_weights(args['weights'])
 
 nb_epoch = 0
 
 # Training if there is no trained weights specified
-if args['weights'] == '':
+if args['mode'] == 'train' or args['weights'] == '':
   while True:
     print('\n\n')
     model.fit(X, y, batch_size=BATCH_SIZE, verbose=1, nb_epoch=1)
@@ -58,8 +61,10 @@ if args['weights'] == '':
       model.save_weights('checkpoint_{}_epoch_{}.hdf5'.format(HIDDEN_DIM, nb_epoch))
 
 # Else, loading the trained weights and performing generation only
-else:
+elif args['weights'] == '':
   # Loading the trained weights
   model.load_weights(args['weights'])
   generate_text(model, GENERATE_LENGTH, VOCAB_SIZE, ix_to_char)
   print('\n\n')
+else:
+  print('\n\nNothing to do!')
