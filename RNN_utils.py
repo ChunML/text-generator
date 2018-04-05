@@ -27,9 +27,9 @@ def load_data(data_dir, seq_length):
 	ix_to_char = {ix:char for ix, char in enumerate(chars)}
 	char_to_ix = {char:ix for ix, char in enumerate(chars)}
 
-	X = np.zeros((len(data)/seq_length, seq_length, VOCAB_SIZE))
-	y = np.zeros((len(data)/seq_length, seq_length, VOCAB_SIZE))
-	for i in range(0, len(data)/seq_length):
+	X = np.zeros((len(data)//seq_length, seq_length, VOCAB_SIZE))
+	y = np.zeros((len(data)//seq_length, seq_length, VOCAB_SIZE))
+	for i in range(0, len(data)//seq_length):
 		X_sequence = data[i*seq_length:(i+1)*seq_length]
 		X_sequence_ix = [char_to_ix[value] for value in X_sequence]
 		input_sequence = np.zeros((seq_length, VOCAB_SIZE))
